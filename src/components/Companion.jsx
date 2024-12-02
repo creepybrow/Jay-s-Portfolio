@@ -1,15 +1,42 @@
-import {Html} from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import React, { useRef, useEffect, useState } from 'react';
 import { TextureLoader } from 'three';
-import {useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import Navbar from '../sections/Navbar';
 
-const Companion = ({ position = [0, 1, 2, 3], logoUrl }) => {
+const Companion = ({ position = [1, 5, 1], logoUrl }) => {
   const meshRef = useRef();
   const [showNav, setShowNav] = useState(false);
   const [texture, setTexture] = useState(null);
   const { camera, gl } = useThree();
-  const raycaster = new THREE.Raycaster();
+  const [mouse, setMouse] = useState([0,0]);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMouse([event.clientX, event.clientY]);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  useFrame(() => {
+    const time = Date.now() * 0.008;
+
+    
+
+    //follow mouse cursor
+    const [mouseX, mouseY] = mouse;
+    const targetX = (mouseX / window.innerWidth) * 8;
+    const targetY = (mouseY / window.innerHeight) * 8;
+    
+    //Floating effect
+    meshRef.current.position.x = THREE.MathUtils.lerp(meshRef.current.position.x, targetX, 0.5);
+    meshRef.current.position.y = THREE.MathUtils.lerp(meshRef.current.position.y, targetY, 0.5);
+  });
 
   // Load texture once
   useEffect(() => {
@@ -22,61 +49,46 @@ const Companion = ({ position = [0, 1, 2, 3], logoUrl }) => {
   // Floating animation using useFrame
   useFrame(() => {
     if (meshRef.current) {
-      const time = Date.now() * 0.001;
-      const radius = 2;// Radius of the cirular path
+      const time = Date.now() * 0.01;
+      const radius = 2; // Radius of the circular path
       const speed = 1;
-      const offset = 1;
+      const offset = 4;
 
-      meshRef.current.position.x = 12 , Math.cos(time * speed) * (radius - offset) + position[0]; // Float up and down
-      meshRef.current.position.y =  Math.sin(time + position[2]) * radius + position[0];
+      // meshRef.current.position.x = Math.cos(time * speed) * (radius - offset) + position[0]; // Float up and down
+      // meshRef.current.position.y = Math.cos(time + position[0]) * radius + position[1];
     }
   });
 
-  const handleClick = () => {
-    setShowNav(prev => !prev); // Toggle navigation
+  // Handle mesh click (toggle navigation menu visibility)
+  const handleMeshClick = () => {
+    console.log("Mesh Clicked");
+    setShowNav(prevShowNav => !prevShowNav); // Toggle visibility
   };
-
-  useEffect(() => {
-    const handleMouseClick = (event) => {
-      const mouse = new THREE.Vector2(
-        (event.clientX / window.innerWidth) * 2 - 1,
-        -(event.clientY / window.innerHeight) * 2 + 1
-      );
-
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObject(meshRef.current);
-
-      if (intersects.length > 0) {
-        handleClick();
-      }
-    };
-
-    gl.domElement.addEventListener('click', handleMouseClick);
-
-    return () => {
-      gl.domElement.removeEventListener('click', handleMouseClick);
-    };
-  }, [camera, gl]);
 
   return (
     <>
-      <mesh ref={meshRef} position={position}>
-        <sphereGeometry args={[0.8, 32, 32]} />
-        <meshPhysicalMaterial 
+      <mesh ref={meshRef} position={position} onClick={() => setShowNav(false)}>
+        <sphereGeometry args={[4, 32, 32]} />
+        <meshPhysicalMaterial
           attach="material"
-          roughness={1}
-          metalness={0.5} 
+          roughness={0.4}
+          metalness={2.5}
           map={texture}
-          color="green"
+          color="blue"
           opacity={1}
           transparent
         />
+        {showNav && (
+          <Html position={[position[0] + 1, position[1] + 2, position[2]]}>
+            <Navbar/>
+          </Html>
+        )}
+        {!showNav && (
+          <Html position={[position[0], position[1] + 0, position[2]]}>
+            <button className="text-white" onClick={() => setShowNav(true)}>Click to Navigate</button>
+          </Html>
+        )}
       </mesh>
-      {showNav && (
-        <Html position={[position[0], position[1] + 1, position[2]]}>
-          {/* Your navigation UI goes here */}
-        </Html>
-      )}
     </>
   );
 };

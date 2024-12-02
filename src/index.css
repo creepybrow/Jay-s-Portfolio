@@ -404,3 +404,21 @@ span:nth-child(13){
   top:35px;
   left:50%;
 }
+.text-white{
+  transform: translateY(-150%);
+  font-size: 24px;
+  height:32px;
+  width:100%;
+  color:white;
+  font-weight: bold;
+}
+.white-button{
+  color:white;
+  font-size: 24px;
+}
+.menu-button{
+  position:absolute;
+  color:white;
+  width:24px;
+  height:24px;
+}

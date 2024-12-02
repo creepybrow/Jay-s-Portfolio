@@ -33,8 +33,8 @@ const Ball = ({ position = [0, 1, 2], logoUrl }) => {
 
   return (
     <>
-      <mesh ref={meshRef} position={position} onClick={handleClick}>
-        <sphereGeometry args={[2, 45, 32]} />
+      <mesh ref={meshRef} position={position}>
+        <sphereGeometry args={[5, 45, 32]} />
         <meshStandardMaterial 
         attach="material"
         roughness={0.8}

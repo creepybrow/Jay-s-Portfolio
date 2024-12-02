@@ -5,7 +5,6 @@ import Navbar from "./sections/Navbar"
 const App = () => {
   return (
     <main className='max-w-7xl flex'>
-      <Navbar/>
       <Hero/>
       <About/>
     </main>

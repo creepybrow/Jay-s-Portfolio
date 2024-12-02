@@ -1,40 +1,37 @@
 import React, { useState } from 'react'
 import { navLinks } from '../constants/index.js';
 
-const Navbar = () => {
+const Navbar = ({onClose}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleMenu = () => setIsOpen(prev=>!prev);//Toggling the state correctly
 
     const NavItems = () =>{
         return(
             <div>
                 <ul className='nav-ul'>
                     {navLinks.map(({id, href, name}) =>(
-                        <li key={id} className='nav-li' onClick={() =>{}}>
-                            <a href={href} className='nav-li_a'>
+                        <li key={id} className='nav-li'>
+                            <a href={href} className='nav-li_a'onClick={onClose}>
                                 {name}
                             </a>
                         </li>
                     ))}
+                    <button className='white-button' onClick={onClose}>
+                    </button>
                 </ul>
             </div>
         )
     }
-    const [isOpen, setisOpen] = useState(false);
-
-    const toggleMenu = () => setisOpen (!isOpen);
+ 
       return (
     <header className='fixed top-0 left-0 right-0 z-50 bg-black/90'>
         <div className='max-w-7xl mx-auto'>
             <div className='flex justify-between items-center py-5 mx-auto c-space'>
                 <a href="/" className='text-blue-400 font-bold text-xl hover:text-white
-                transition-colors'>
-                    
+                transition-colors'>  
                 </a>
-
-                <button onClick={toggleMenu} className='text-blue-400 hover:text-white
-                focus:outline-none sm:hidden flex' aria-label="Toggle menu">
-                    <img src={isOpen ? "assets/close.svg" : "assets/menu.svg"} alt="toggle" className='w-6 h-6'/>
+                <button onClick={toggleMenu} className='menu-button'>
                 </button>
-
                 <nav className="sm:flex hidden">
                     <NavItems/>
                 </nav>

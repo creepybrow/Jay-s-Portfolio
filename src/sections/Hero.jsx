@@ -38,7 +38,7 @@ const MyScene = () => {
   };
 }
 const handleInputBlur = () => {
-  setCameraPosition([2,0,20])//Zoom out
+  setCameraPosition([0,0,20])//Zoom out
   setInputVisible(false);
 }
 
@@ -51,33 +51,24 @@ const sizes = calculateSizes(isSmall,)
           gl={{alpha:true}} // enable alpha for tranparency
           >
               <Suspense fallback={<CanvasLoader/>}>
-             <PerspectiveCamera makeDefault position={[0,0,20]}/>
-             {/* <HackerRoom 
-             position={[-10,-7.7,-10.0]} 
-             rotation={[-2.7,-0.1,3.1]}
-             scale={isMobile ? 0.07 : 0.1}/> */}
+             <PerspectiveCamera makeDefault position={[5,5,20]}/>
              <group>
-                {/* <Blackhole
-                position={[-10, 20, -10]}
-                rotation={[4, 7, 50]}
-                scale={[4, 10,1]}
-                /> */}
                 {/* <FloatingBubble/> */}
-                <PlasmaBall/>
-                <FloatingLogo/>
-                <BubbleCluster/>
-                <ElectricSphere/>
-                <CrazyBall/>
+                {/* <PlasmaBall/> */}
+                {/* <FloatingLogo/> */}
+                {/* <BubbleCluster/> */}
+                {/* <ElectricSphere/> */}
+                {/* <CrazyBall/> */}
                 {/* <Lightning/> */}
-                <Ball/>
+                {/* <Ball/> */}
                 <Companion
                 style={{position:'absolute',
                   pointerEvents:'auto',
-                  zIndex:10
+                  zIndex:1
                 }}/>            
              </group>
-             <ambientLight intensity={0.6}/>
-             <directionalLight position={[1,1,10]} intensity={0.7}/>
+             <ambientLight intensity={0.06}/>
+             <directionalLight position={[-8,-10,20]} intensity={10}/>
             
               </Suspense>
           </Canvas>
