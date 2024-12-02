@@ -2,11 +2,9 @@ import { PerspectiveCamera, Stars } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React, { Suspense, useState } from 'react'
 import CanvasLoader from '../components/CanvasLoader'
-import HackerRoom from '../components/HackerRoom'
 import {Leva, useControls} from "leva";
 import { useMediaQuery } from 'react-responsive'
 import { calculateSizes } from '../constants/index.js'
-import Blackhole from '../components/Blackhole.jsx'
 import { useGSAP } from '@gsap/react'
 import FloatingBubble from '../components/Bubble.jsx'
 import AboutMe from '../components/Rock.jsx'
@@ -17,7 +15,6 @@ import Ball from '../components/Ball.jsx'
 import Companion from '../components/Companion.jsx'
 import CrazyBall from '../components/CrazyBall.jsx'
 import PlasmaBall from '../components/Bubble.jsx'
-import Lightning from '../components/Lightning.jsx'
 
 
 const Hero = () => {
