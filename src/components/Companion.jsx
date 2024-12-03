@@ -71,20 +71,20 @@ const Companion = ({ position = [1, 5, 1], logoUrl }) => {
         <sphereGeometry args={[4, 32, 32]} />
         <meshPhysicalMaterial
           attach="material"
-          roughness={0.4}
-          metalness={2.5}
+          roughness={0.1}
+          metalness={1.2}
           map={texture}
-          color="blue"
+          color="red"
           opacity={1}
           transparent
         />
         {showNav && (
-          <Html position={[position[0] + 1, position[1] + 2, position[2]]}>
+          <Html position={[position[0] - 10, position[1] + 2, position[2]]}>
             <Navbar/>
           </Html>
         )}
         {!showNav && (
-          <Html position={[position[0], position[1] + 0, position[2]]}>
+          <Html position={[position[0] + -2, position[1] + -5, position[2]]}>
             <button className="text-white" onClick={() => setShowNav(true)}>Click to Navigate</button>
           </Html>
         )}
