@@ -56,7 +56,7 @@ export const navLinks = [
     },
   ];
   
-  export const myProjects = [
+  export const skills = [
     {
       title: 'Podcastr - AI Podcast Platform',
       desc: 'Podcastr is a revolutionary Software-as-a-Service platform that transforms the way podcasts are created. With advanced AI-powered features like text-to-multiple-voices functionality, it allows creators to generate diverse voiceovers from a single text input.',

@@ -5,16 +5,21 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import Navbar from '../sections/Navbar';
 
-const Companion = ({ position = [1, 5, 1], logoUrl }) => {
+const Companion = ({ position = [5, 5, 1], logoUrl }) => {
   const meshRef = useRef();
+  const eyeRef = useRef();
   const [showNav, setShowNav] = useState(false);
   const [texture, setTexture] = useState(null);
   const { camera, gl } = useThree();
-  const [mouse, setMouse] = useState([0,0]);
+  const [mouse, setMouse] = useState([0, 0]);
+  const [wandering, setWandering] = useState(false); // state to control wandering behavior
+  const [randomDirection, setRandomDirection] = useState(new THREE.Vector3(2, 2, 0)); // Random direction for wandering
 
+  // Handle mouse movement
   useEffect(() => {
     const handleMouseMove = (event) => {
       setMouse([event.clientX, event.clientY]);
+      setWandering(true); // Stop wandering if mouse is moving
     };
     window.addEventListener('mousemove', handleMouseMove);
 
@@ -23,19 +28,60 @@ const Companion = ({ position = [1, 5, 1], logoUrl }) => {
     };
   }, []);
 
+  // Create random wandering direction
+  useEffect(() => {
+    if (wandering) {
+      const interval = setInterval(() => {
+        const randomVec = new THREE.Vector3(
+          (Math.random() - 1) * 5, // Random X direction
+          (Math.random() - 0.5) * 6, // Random Y direction
+          2 // Fixed Z direction (towards camera)
+        );
+        setRandomDirection(randomVec);
+      }, 500); // Update random direction every 3 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [wandering]);
+
   useFrame(() => {
-    const time = Date.now() * 0.008;
-
-    
-
-    //follow mouse cursor
     const [mouseX, mouseY] = mouse;
-    const targetX = (mouseX / window.innerWidth) * 8;
-    const targetY = (mouseY / window.innerHeight) * 8;
-    
-    //Floating effect
-    meshRef.current.position.x = THREE.MathUtils.lerp(meshRef.current.position.x, targetX, 0.5);
-    meshRef.current.position.y = THREE.MathUtils.lerp(meshRef.current.position.y, targetY, 0.5);
+
+    // Normalize mouse position to the range of -1 to 1
+    const mouseXNormalized = (mouseX / window.innerWidth) * 2 - 1; // -1 to 1 range
+    const mouseYNormalized = (mouseY / window.innerHeight) * -2 + 1; // -1 to 1 range
+
+    // Direction vector for mouse position or wandering
+    const direction = wandering
+      ? randomDirection // Use random direction if wandering
+      : new THREE.Vector3(mouseXNormalized, mouseYNormalized, 3); // Use mouse direction if not wandering
+
+    direction.normalize(); // Normalize to stay within the sphere
+
+    // Position the eye on the sphere's surface
+    const sphereRadius = 4;
+    if (eyeRef.current) {
+      eyeRef.current.position.copy(direction.multiplyScalar(sphereRadius)); // Position the eye on the sphere's surface
+      eyeRef.current.lookAt(camera.position); // Make the eye always look at the camera (or adjust based on your preference)
+    }
+
+    // Rotation of the main mesh
+    if (meshRef.current) {
+      const rotationSpeed = 0.0001;
+      meshRef.current.rotation.y += mouseXNormalized * rotationSpeed;
+      meshRef.current.rotation.x += mouseYNormalized * rotationSpeed;
+    }
+
+    // Floating effect for the main mesh
+    const time = Date.now() * 0.001;
+    const radius = 0.1;
+    const speed = 1;
+    const offset = 3;
+
+    if (meshRef.current) {
+      meshRef.current.position.x = Math.cos(time * speed) * (radius - offset) + position[0];
+      meshRef.current.position.y = Math.cos(time + position[0]) * radius + position[1];
+    }
   });
 
   // Load texture once
@@ -46,46 +92,40 @@ const Companion = ({ position = [1, 5, 1], logoUrl }) => {
     });
   }, [logoUrl]);
 
-  // Floating animation using useFrame
-  useFrame(() => {
-    if (meshRef.current) {
-      const time = Date.now() * 0.01;
-      const radius = 2; // Radius of the circular path
-      const speed = 1;
-      const offset = 4;
-
-      // meshRef.current.position.x = Math.cos(time * speed) * (radius - offset) + position[0]; // Float up and down
-      // meshRef.current.position.y = Math.cos(time + position[0]) * radius + position[1];
-    }
-  });
-
   // Handle mesh click (toggle navigation menu visibility)
   const handleMeshClick = () => {
-    console.log("Mesh Clicked");
-    setShowNav(prevShowNav => !prevShowNav); // Toggle visibility
+    console.log('Mesh Clicked');
+    setShowNav((prevShowNav) => !prevShowNav); // Toggle visibility
   };
-
+  const burningColor = new THREE.Color(2,0.9, 0.1);//fiery orange
   return (
     <>
       <mesh ref={meshRef} position={position} onClick={() => setShowNav(false)}>
         <sphereGeometry args={[4, 32, 32]} />
         <meshPhysicalMaterial
           attach="material"
-          roughness={0.1}
-          metalness={1.2}
+          metalness={1.5}
           map={texture}
           color="red"
           opacity={1}
           transparent
         />
+
+        {/* Eye attached directly to the sphere */}
+        <mesh ref={eyeRef} position={[1, 2, 0]}>
+          <sphereGeometry args={[1, 32, 16]} />
+          <meshPhysicalMaterial
+            attach="material"
+            roughness={0.2}
+            metalness={2}
+            color="black"
+            emissive={burningColor} // Glowing effect
+          />
+        </mesh>
+
         {showNav && (
           <Html position={[position[0] - 10, position[1] + 2, position[2]]}>
-            <Navbar/>
-          </Html>
-        )}
-        {!showNav && (
-          <Html position={[position[0] + -2, position[1] + -5, position[2]]}>
-            <button className="text-white" onClick={() => setShowNav(true)}>Click to Navigate</button>
+            <Navbar />
           </Html>
         )}
       </mesh>
