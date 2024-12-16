@@ -52,17 +52,14 @@ import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <header className='header'>
-        <NavLink to="/" className="w-10 h-10 rounded-lg 
-        bg-white items-center justify-center flex font-bold shadow-md">
+    <header className='nav-bar__header'>
+        <NavLink to="/" className="nav-link">
             <p className=''>JS</p>
         </NavLink>
-        <NavLink to="/about" className={({isActive}) => isActive ?
-        'black' : 'text-black'}>
+        <NavLink to="/about" className="nav-link">
             About
         </NavLink>
-        <NavLink to="/projects" className={({isActive}) => isActive ?
-        'text-blue-500' : 'text-black'}>
+        <NavLink to="/projects" className="nav-link">
             Projects
         </NavLink>
     </header>

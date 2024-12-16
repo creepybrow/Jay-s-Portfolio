@@ -1,30 +1,28 @@
 import React from 'react'
 import {skills} from '../constants';
-import { div } from 'three/webgpu';
 
 const About = () => {
   return (
-    <section className='max-container'>
-      <h1 className='head-text'>
-        Hello, I'm<span className='blue-gradient_text font-semibold'> Jay</span></h1>
-
-      <div className='mt-5 flex flex-col gap-3 text-slate-500'>
-        <p>Software Engineer based in Oregon, I have a passion for creating lovely interfaces and
-          fun experiences through code based applications. 
+    <section className='about-section'>
+      <h1 className='about-title'></h1>
+      <div className='about-me__container'>
+        <p className='about-me__para'>Software Engineer based in Oregon, 
+          I have a passion for creating robust websites with fantastic designs, 
+          and video games on the side. Looking to make your next website?
+           Let's create something truly magical together! 
         </p>
+        <p>Currently learning: React, Three.js, and more!</p>
       </div>
-
-      <div className='py-10 flex flex-col'>
-        <h3 className='subhead-text'>My Skills</h3>
-
-        <div className='mt-16 flex flex-wrap gap-12'>
-          {skills.map((skills) => (
-            <div>
+      <div className='about-me__container'>
+        <h3 className='about-skill__title'>My Skills</h3>
+        <div className="skill-container">
+          {skills.map((skill, index) => (
+            <div key={index}>
               <div>
                 <img
-                src={skills.imageUrl}
-                alt={skills.name}
-                className='w-1/2 h-1/2'/>
+                src={skill.imageUrl}
+                alt={skill.name}
+                className=''/>
               </div>
             </div>
           ))}

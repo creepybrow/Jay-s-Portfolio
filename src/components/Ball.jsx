@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { Html } from '@react-three/drei'; // Ensure this is imported
 
-const Ball = ({ position = [0, 1, 2], logoUrl }) => {
+const Ball = ({ position = [-20, 5, 2], logoUrl }) => {
   const meshRef = useRef();
   const [showInfo, setShowInfo] = useState(false);
   const [texture, setTexture] = useState(null);
@@ -19,10 +19,10 @@ const Ball = ({ position = [0, 1, 2], logoUrl }) => {
   // Floating animation using useFrame
   useFrame(() => {
     if (meshRef.current) {
-      const time = Date.now() * 0.002;
-      meshRef.current.position.y = Math.sin(time + position[0]) * -8 + position[0];
-      meshRef.current.position.x = -8;
-      meshRef.current.position.z = Math.sin(time + position[1]) * 6 + position[1];
+      const time = Date.now() * 0.008;
+      const radius =1;
+      const centerX = window.innerWidth/2;
+      const centerY = window.innerHeight/2;
     }
   });
 
@@ -34,10 +34,10 @@ const Ball = ({ position = [0, 1, 2], logoUrl }) => {
   return (
     <>
       <mesh ref={meshRef} position={position}>
-        <sphereGeometry args={[5, 45, 32]} />
+        <sphereGeometry args={[10, 32, 32]} />
         <meshStandardMaterial 
         attach="material"
-        roughness={0.8}
+        roughness={0.5}
         metalness={1.1} 
         map={texture}
         color="silver"
@@ -45,7 +45,7 @@ const Ball = ({ position = [0, 1, 2], logoUrl }) => {
         
       </mesh>
       {showInfo && (
-        <Html position={[position[0], position[1] + 5, position[2] +1]}>
+        <Html position={[position[1] -8, position[1] + -5, position[2] +1]}>
           <div style={{
             color: 'white', // Brighter text
             background: 'rgba(0, 0, 255, 0.7)', // Darker background
@@ -67,8 +67,8 @@ const App = () => {
 
   return (
     <Canvas style={{ height: '100vh', background: 'black' }} camera={{ position: [20, 2, 10], fov: 75 }}>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 10]} />
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[1, 1, 10]} />
       <FloatingLogo position={[5, 5, 0]} logoUrl={logoUrl} />
     </Canvas>
   );

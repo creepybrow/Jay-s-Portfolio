@@ -41,83 +41,30 @@ const sizes = calculateSizes(isSmall,)
     <section className='h-full w-full flex-col absolute mt-50 py-40 overflow-hidden'>
           <Canvas
           style={{background:'transparent', pointerEvents:'auto'}}
-          camera={{position: [0,0,20], fov:75}}
+          camera={{position: [2,0,20], fov:75}}
           gl={{alpha:true}} // enable alpha for tranparency
           >
               <Suspense fallback={<CanvasLoader/>}>
-             <PerspectiveCamera makeDefault position={[5,5,20]}/>
+             <PerspectiveCamera makeDefault position={[5,5,40]}/>
              <group>
                 {/* <FloatingBubble/> */}
                 {/* <PlasmaBall/> */}
                 {/* <FloatingLogo/> */}
                 {/* <BubbleCluster/> */}
-                {/* <ElectricSphere/> */}
-                {/* <CrazyBall/> */}
+                <ElectricSphere/>
+                <CrazyBall/>
                 {/* <Lightning/> */}
-                {/* <Ball/> */}
-                <Companion
-                style={{position:'absolute',
+                <Ball/>
+                 <Companion
+                style={{position:'relative',
                   pointerEvents:'auto',
                   zIndex:1
-                }}/>            
+                }}/>             
              </group>
-             <ambientLight intensity={0.06}/>
-             <directionalLight position={[-8,-10,20]} intensity={10}/>
-            
+             <ambientLight intensity={0.1}/>
+             <directionalLight position={[15,8,25]} intensity={20}/>
               </Suspense>
           </Canvas>
-        <div className='w-full h-full absolute mt-10 py-5 inset-0'>
-        <div className='w-full  h-full absolute mx-auto flex flex-col 
-        sm:mt-14 mt-20  md:px-[10%] lg:px-[20%] gap-4'>
-        <p id="flame" className="text-gray-500 fire cursor-pointer">
-          <span>J</span>
-          <span>A</span>
-          <span>Y</span>
-          {' '}
-          <span>S</span>
-          <span>T</span>
-          <span>E</span>
-          <span>W</span>
-          <span>A</span>
-          <span>R</span>
-          <span>T</span>
-          {' '}
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </p>
-            <p className='text-red-400 fire cursor-pointer'>
-              <span>F</span>
-              <span>R</span>
-              <span>O</span>
-              <span>N</span>
-              <span>T</span>
-              <span>E</span>
-              <span>N</span>
-              <span>D</span>
-              {' '}
-              <span>W</span>
-              <span>E</span>
-              <span>B</span>
-              {' '}
-              <span>E</span>
-              <span>N</span>
-              <span>G</span>
-              <span>I</span>
-              <span>N</span>
-              <span>E</span>
-              <span>E</span>
-              <span>R</span>
-            </p>
-        </div>
-               {/* <Leva/> */}
-           
-        </div>
-
     </section>
   )
 }

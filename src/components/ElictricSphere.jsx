@@ -41,13 +41,13 @@ const ElectricSphere = ({ position = [0, 1, 2], logoUrl }) => {
   useFrame(() => {
     if (meshRef.current) {
       const time = Date.now() * 0.001;
-      meshRef.current.position.y = Math.sin(time + position[0]) * 7 - position[2];
-      meshRef.current.position.x = -9;
-      meshRef.current.position.z = Math.sin(time + position[1]) * 8 + position[1];
+      meshRef.current.position.y = Math.sin(time + position[0]) * 25 + position[2];
+      meshRef.current.position.x = -20;
+      meshRef.current.position.z = Math.sin(time + position[2]) * 15 + position[1];
 
       //Check distance to the larger orb
-      const distance = meshRef.current.position.distanceTo(new THREE.Vector3(FloatingBubble[0], FloatingBubble[1], FloatingBubble[2]));
-      if(distance < 5){// adjust the threshold as needed
+      const distance = meshRef.current.position.distanceTo(new THREE.Vector3(FloatingBubble[1], FloatingBubble[2], FloatingBubble[2]));
+      if(distance < 4){// adjust the threshold as needed
         setIsShocking(true);
       }else{
         setIsShocking(false);
@@ -69,7 +69,7 @@ const ElectricSphere = ({ position = [0, 1, 2], logoUrl }) => {
         roughness={0.5}
         metalness={0.5} 
         map={texture}
-        color="red"
+        color="white"
         opacity={0.4}/>
         
       </mesh>
@@ -82,7 +82,7 @@ const ElectricSphere = ({ position = [0, 1, 2], logoUrl }) => {
             borderRadius: '20px'
           }}>
             <h3>About Me</h3>
-            <p>Currently learning: React, Three.js, and more!</p>
+            
           </div>
         </Html>
       )}

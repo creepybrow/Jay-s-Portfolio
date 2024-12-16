@@ -20,9 +20,9 @@ const CrazyBall = ({ position = [0, 1, 2], logoUrl }) => {
   useFrame(() => {
     if (meshRef.current) {
       const time = Date.now() * 0.002;
-      meshRef.current.position.y = Math.sin(time + position[0]) * -6 + position[0];
-      meshRef.current.position.x = -11, Math.cos(time + position[0] * 1 + position[0]);
-      meshRef.current.position.z = Math.sin(time + position[1]) * 7 + position[0];
+      meshRef.current.position.y = Math.sin(time + position[0]) * 6 + position[0];
+      meshRef.current.position.x = -12, Math.cos(time + position[0] * 10 - position[0]);
+      meshRef.current.position.z = Math.sin(time + position[1]) * 15 + position[0];
     }
   });
 
@@ -34,7 +34,7 @@ const CrazyBall = ({ position = [0, 1, 2], logoUrl }) => {
   return (
     <>
       <mesh ref={meshRef} position={position} onClick={handleClick}>
-        <sphereGeometry args={[0.8, 25, 32]} />
+        <sphereGeometry args={[2, 25, 32]} />
         <meshStandardMaterial 
         attach="material"
         roughness={0.8}
