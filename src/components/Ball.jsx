@@ -2,8 +2,9 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { Html } from '@react-three/drei'; // Ensure this is imported
+import ElectricCurrent from './ElectricCurrent';
 
-const Ball = ({ position = [-20, 5, 2], logoUrl }) => {
+const Ball = ({ position = [-20, 8, 2], logoUrl }) => {
   const meshRef = useRef();
   const [showInfo, setShowInfo] = useState(false);
   const [texture, setTexture] = useState(null);
@@ -23,6 +24,10 @@ const Ball = ({ position = [-20, 5, 2], logoUrl }) => {
       const radius =1;
       const centerX = window.innerWidth/2;
       const centerY = window.innerHeight/2;
+      const scale = 10 + Math.sin(time)* 0.0008;
+
+      const colorValue = Math.abs(Math.sin(time));
+      meshRef.current.material.color.setRGB(1.8 + 1.9 * colorValue, 0.2, 2);
     }
   });
 
@@ -40,8 +45,9 @@ const Ball = ({ position = [-20, 5, 2], logoUrl }) => {
         roughness={0.5}
         metalness={1.1} 
         map={texture}
-        color="silver"
+        color="blue"
         opacity={1}/>
+        <ElectricCurrent/>
         
       </mesh>
       {showInfo && (

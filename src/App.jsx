@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {Route, BrowserRouter as Router, Routes} from 'react-router-dom'
 import {Home, About, Projects, Contact} from './pages';
-import Hero from "./sections/Hero"
+// import Hero from "./sections/Hero"
 import Navbar from "./sections/Navbar"
 
 const App = () => {
@@ -10,7 +10,7 @@ const App = () => {
       <main className="bg-slate-300/20">
       <Router>
         <Navbar/>
-        <Hero/>
+        {/* <Hero/> */}
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/about" element={<About/>}/>

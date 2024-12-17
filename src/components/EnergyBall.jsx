@@ -1,33 +1,12 @@
-import * as THREE from 'three';
 import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { Html } from '@react-three/drei'; // Ensure this is imported
-import FloatingBubble from './Bubble';
 
-const ElectricCurrent = () => {
-  const points = [];
-  const count = 100;//Number of points in your electric current
-
-  for(let i= 0; i <count; i++){
-    const x = Math.sin(i*0.2)*5;//Adjust for your desired movement
-    const y = Math.cos(i*0.3)*5;
-    points.push(new THREE.Vector3(x,y,0));
-  }
-
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-  const material = new THREE.LineBasicMaterial({color:0x00ffcc});
-
-  return(
-    <line geometry={geometry} material={material}/>
-  );
-};
-
-const ElectricSphere = ({ position = [0, 1, 2], logoUrl }) => {
+const EnergyBall = ({ position = [-18, 10, 2], logoUrl }) => {
   const meshRef = useRef();
   const [showInfo, setShowInfo] = useState(false);
   const [texture, setTexture] = useState(null);
-  const [isShocking, setIsShocking] = useState(false);
 
   // Load texture once
   useEffect(() => {
@@ -41,17 +20,9 @@ const ElectricSphere = ({ position = [0, 1, 2], logoUrl }) => {
   useFrame(() => {
     if (meshRef.current) {
       const time = Date.now() * 0.001;
-      meshRef.current.position.y = Math.sin(time + position[1]) * 16 + position[2];
-      meshRef.current.position.x = -16;
-      meshRef.current.position.z = Math.sin(time + position[2]) * 14 + position[0];
-
-      //Check distance to the larger orb
-      const distance = meshRef.current.position.distanceTo(new THREE.Vector3(FloatingBubble[1], FloatingBubble[2], FloatingBubble[2]));
-      if(distance < 4){// adjust the threshold as needed
-        setIsShocking(true);
-      }else{
-        setIsShocking(false);
-      }
+      meshRef.current.position.x = Math.cos(time + position[1]-11)* 18 + position[0];
+      meshRef.current.position.y = Math.sin(time + position[0]+15)* 8 + position[1];
+      meshRef.current.position.z = Math.cos(time + position[1]) * 18 + position[2];
     }
   });
 
@@ -63,26 +34,26 @@ const ElectricSphere = ({ position = [0, 1, 2], logoUrl }) => {
   return (
     <>
       <mesh ref={meshRef} position={position} onClick={handleClick}>
-        <sphereGeometry args={[1, 24, 32]} />
+        <sphereGeometry args={[2, 25, 32]} />
         <meshStandardMaterial 
         attach="material"
-        roughness={0.5}
-        metalness={0.5} 
+        roughness={0.8}
+        metalness={1.1} 
         map={texture}
-        color="orange"
-        opacity={0.4}/>
+        color="red"
+        opacity={1}/>
         
       </mesh>
       {showInfo && (
         <Html position={[position[0], position[1] + 5, position[2] +1]}>
           <div style={{
-            color: 'red', // Brighter text
+            color: 'white', // Brighter text
             background: 'rgba(0, 0, 255, 0.7)', // Darker background
             padding: '10px',
             borderRadius: '20px'
           }}>
             <h3>About Me</h3>
-            
+            <p>Currently learning: React, Three.js, and more!</p>
           </div>
         </Html>
       )}
@@ -98,8 +69,8 @@ const App = () => {
     <Canvas style={{ height: '100vh', background: 'black' }} camera={{ position: [20, 2, 10], fov: 75 }}>
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 10]} />
-      <FloatingLogo position={[5, 1, 0]} logoUrl={logoUrl} largeOrbPosition={[0,0,0]}/>
+      <FloatingLogo position={[2,5, 0]} logoUrl={logoUrl} />
     </Canvas>
   );
 };
-export default ElectricSphere;
+export default EnergyBall;

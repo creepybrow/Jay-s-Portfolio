@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 
-const FloatingBubble = ({ position = [0, 1,2,] }) => {
+const FloatingBubble = ({ position = [5, 1,2,] }) => {
   const meshRef = useRef();
 
   // Floating animation
@@ -18,9 +18,18 @@ const FloatingBubble = ({ position = [0, 1,2,] }) => {
     float();
   }, [position]);
 
+  useEffect(() =>{
+    if(mesh.current){
+      const scale = 10 + Math.sin(time) * 0.008;
+
+      const colorValue = Math.abs(Math.sin(time));
+      meshRef.current.material.color.setRGB(1.8 + 1.9 * colorValue, 0.2, 2);
+    }
+  })
+
   return (
     <mesh ref={meshRef} position={position}>
-      <sphereGeometry args={[4, 32, 32]} />
+      <sphereGeometry args={[10, 32, 32]} />
       <meshStandardMaterial
         color="silver"
         roughness={1.1}

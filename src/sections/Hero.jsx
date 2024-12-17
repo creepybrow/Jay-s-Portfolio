@@ -11,6 +11,9 @@ import ElectricSphere from '../components/ElictricSphere.jsx'
 import Ball from '../components/Ball.jsx'
 import Companion from '../components/Companion.jsx'
 import CrazyBall from '../components/CrazyBall.jsx'
+import CrazyBall2 from '../components/CrazyBall2.jsx';
+import EnergyBall from '../components/EnergyBall.jsx';
+import ElectricCurrent from '../components/ElectricCurrent.jsx';
 import PlasmaBall from '../components/Bubble.jsx'
 
 
@@ -38,7 +41,7 @@ const handleInputBlur = () => {
 
 const sizes = calculateSizes(isSmall,)
   return (
-    <section className='h-full w-full flex-col absolute mt-50 py-40 overflow-hidden'>
+    <section className='hero-section'>
           <Canvas
           style={{background:'transparent', pointerEvents:'auto'}}
           camera={{position: [2,0,20], fov:75}}
@@ -53,8 +56,9 @@ const sizes = calculateSizes(isSmall,)
                 {/* <BubbleCluster/> */}
                 <ElectricSphere/>
                 <CrazyBall/>
-                {/* <Lightning/> */}
+                <CrazyBall2/>
                 <Ball/>
+                <EnergyBall/>
                  <Companion
                 style={{position:'relative',
                   pointerEvents:'auto',

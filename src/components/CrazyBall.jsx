@@ -19,9 +19,9 @@ const CrazyBall = ({ position = [0, 1, 2], logoUrl }) => {
   // Floating animation using useFrame
   useFrame(() => {
     if (meshRef.current) {
-      const time = Date.now() * 0.002;
-      meshRef.current.position.y = Math.sin(time + position[0]) * 6 + position[0];
-      meshRef.current.position.x = -12, Math.cos(time + position[0] * 10 - position[0]);
+      const time = Date.now() * 0.001;
+      meshRef.current.position.y = Math.sin(time + position[2]) * 16 + position[2];
+      meshRef.current.position.x = -20, Math.cos(time + position[0] * 10 - position[0]);
       meshRef.current.position.z = Math.sin(time + position[1]) * 15 + position[0];
     }
   });
@@ -40,7 +40,7 @@ const CrazyBall = ({ position = [0, 1, 2], logoUrl }) => {
         roughness={0.8}
         metalness={1.1} 
         map={texture}
-        color="blue"
+        color="red"
         opacity={1}/>
         
       </mesh>
@@ -69,7 +69,7 @@ const App = () => {
     <Canvas style={{ height: '100vh', background: 'black' }} camera={{ position: [20, 2, 10], fov: 75 }}>
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 10]} />
-      <FloatingLogo position={[5, 5, 0]} logoUrl={logoUrl} />
+      <FloatingLogo position={[2,5, 0]} logoUrl={logoUrl} />
     </Canvas>
   );
 };
