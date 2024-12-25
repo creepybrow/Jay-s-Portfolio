@@ -4,7 +4,7 @@ import { TextureLoader } from 'three';
 import { Html } from '@react-three/drei'; // Ensure this is imported
 import ElectricCurrent from './ElectricCurrent';
 
-const Ball = ({ position = [-20, 8, 2], logoUrl }) => {
+const Ball = ({ position = [5, 5, 2], logoUrl }) => {
   const meshRef = useRef();
   const [showInfo, setShowInfo] = useState(false);
   const [texture, setTexture] = useState(null);
@@ -20,14 +20,13 @@ const Ball = ({ position = [-20, 8, 2], logoUrl }) => {
   // Floating animation using useFrame
   useFrame(() => {
     if (meshRef.current) {
-      const time = Date.now() * 0.008;
-      const radius =1;
+      const time = Date.now() * 0.001;
       const centerX = window.innerWidth/2;
       const centerY = window.innerHeight/2;
-      const scale = 10 + Math.sin(time)* 0.0008;
+      const scale = 10 + Math.sin(time)* 5;
 
       const colorValue = Math.abs(Math.sin(time));
-      meshRef.current.material.color.setRGB(1.8 + 1.9 * colorValue, 0.2, 2);
+      meshRef.current.material.color.setRGB(0.2 + 1 * colorValue, 0, 0.5);
     }
   });
 
@@ -45,13 +44,13 @@ const Ball = ({ position = [-20, 8, 2], logoUrl }) => {
         roughness={0.5}
         metalness={1.1} 
         map={texture}
-        color="blue"
+        color="black"
         opacity={1}/>
         <ElectricCurrent/>
         
       </mesh>
       {showInfo && (
-        <Html position={[position[1] -8, position[1] + -5, position[2] +1]}>
+        <Html position={[position[1] -5, position[1] + -5, position[2] +1]}>
           <div style={{
             color: 'white', // Brighter text
             background: 'rgba(0, 0, 255, 0.7)', // Darker background

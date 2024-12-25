@@ -1,61 +1,170 @@
+import * as THREE from 'three';
+import { useEffect, useRef, useState } from 'react';
+import { useThree } from '@react-three/fiber';
 
-import * as THREE from 'three'; 
-import { useEffect, useRef } from 'react'; 
+const ElectricCurrent = ({ camera }) => {
+  const points = [];
+  const count = 500;  // Increase the number of points
+  const lineRef = useRef();
+  const [isZapping, setIsZapping] = useState(false);
+  const mouse = new THREE.Vector2();
+  const maxZapDistance = 1000;
+  const attractionStrength = 700; // Adjust attraction strength
 
-const ElectricCurrent = () => {     
-    const points = [];     
-    const count = 5000;      
+  // Generate points for the electric current with random initial positions
+  for (let i = 0; i < count; i++) {
+    const x = Math.cos(i * 0.8) * 8;
+    const y = Math.sin(i * 0.8) * 8;
+    const z = Math.sin(i * 0.8) * 0;
+    points.push(new THREE.Vector3(x, y, z));
+  }
 
-    // Generate the points for the current
-    for (let i = 0; i < count; i++) {         
-        const x = Math.sin(i * 200) * -100; // Adjust for your desired movement         
-        const y = Math.cos(i * 900) * 1000;         
-        const z = Math.sin(i * 2000) * -200;         
-        points.push(new THREE.Vector3(x, y, z));     
-    } 
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  const raycaster = new THREE.Raycaster();
 
-    const geometry = new THREE.BufferGeometry().setFromPoints(points); 
-    const material = new THREE.LineBasicMaterial({ color: 0xffffff }); // Use LineBasicMaterial for lines
-    const lineRef = useRef();      
+  const { camera: contextCamera } = useThree();
+  const currentCamera = camera || contextCamera;
 
-    useEffect(() => {       
-        const raycaster = new THREE.Raycaster();       
-        const meshes = []; // Make sure to have your rotating meshes in this array
+  useEffect(() => {
+    if (!currentCamera) {
+      console.error('Camera is not available');
+      return;
+    }
 
-        const animate = () => {         
-            requestAnimationFrame(animate);         
-            const time = Date.now() * 0.008; // Correct method to get time         
-            const pulseColor = new THREE.Color(); // Correct instantiation of THREE.Color 
-            pulseColor.setHSL((Math.sin(time) + 5) / 10, 1, 0.1); // Adjust saturation and lightness 
+    const mouseMoveHandler = (event) => {
+      mouse.x = (event.clientX / window.innerWidth) * 3 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
 
-            // Raycasting logic         
-            for (let i = 0; i < count; i++) {           
-                const from = points[i];           
-                const to = points[i + 5] || points[0]; // Loop back to the first point if at end           
-                raycaster.set(from, to.clone().sub(from).normalize());                      
+    window.addEventListener('mousemove', mouseMoveHandler);
 
-                const intersects = raycaster.intersectObjects(meshes); // Use intersectObjects 
+    const zap = () => {
+      const mousePosition = new THREE.Vector3(mouse.x, mouse.y, 50);
+      raycaster.setFromCamera(mousePosition, currentCamera);
 
-                // Change color when a collision occurs
-                if (intersects.length > 0) {             
-                    material.color.set(0xff0000);           
-                } else {             
-                    material.color.copy(pulseColor);           
-                }         
-            };          
+      const intersects = raycaster.intersectObject(lineRef.current);
 
-            if (lineRef.current) {           
-                lineRef.current.material.color.copy(material.color);         
-            }       
-        };       
-        animate();     
-    }, [material, points]);   
+      if (intersects.length > 0) {
+        setIsZapping(true);
+      } else {
+        setIsZapping(false);
+      }
+    };
 
-    return (     
-        <>     
-            <line ref={lineRef} geometry={geometry} material={material}/>     
-        </>   
-    ); 
-};  
+    const zapInterval = setInterval(zap, 1);
+
+    return () => {
+      clearInterval(zapInterval);
+      window.removeEventListener('mousemove', mouseMoveHandler);
+    };
+  }, [mouse, currentCamera]);
+
+  useEffect(() => {
+    const animate = () => {
+      requestAnimationFrame(animate);
+      const time = Date.now() * 0.002; // Slow down time progression
+
+      if (lineRef.current) {
+        for (let i = 0; i < points.length; i++) {
+          const point = points[i];
+
+          // Core of the plasma ball
+          const corePosition = new THREE.Vector3(0,0, 0);  // Plasma ball center
+
+          // Calculate distance between point and core (attract to core)
+          const distanceToCore = point.distanceTo(corePosition);
+          const directionToCore = corePosition.clone().sub(point).normalize();
+
+          // Attraction force to the core
+          point.add(directionToCore.multiplyScalar(0.1));  // Adjust speed of attraction
+
+          // Pulsating behavior for the tendrils
+          const pulsatingRadius = Math.sin(time + i * 0.5) * 0.5;
+          const pulsatingAngle = Math.cos(time + i * 0.5) * 1.8;
+          point.x += Math.sin(time + i) * pulsatingRadius;
+          point.y += Math.cos(time + i) * pulsatingAngle;
+
+          // Introduce slight jitter to create more dynamic behavior
+          point.x += (Math.random() - 0.5) * 0.8;//Originally 0.8
+          point.y += (Math.random() - 0.5) * 0.1;
+          point.z += (Math.random() - 0.5) * 0.8;
+
+          // Introduce attraction to the mouse for specific tendrils
+          const worldMousePosition = new THREE.Vector3(mouse.x, mouse.y, 1);
+          worldMousePosition.unproject(currentCamera);
+          const distanceToMouse = point.distanceTo(worldMousePosition);
+
+          if (distanceToMouse < maxZapDistance) {
+            const directionToMouse = worldMousePosition.clone().sub(point).normalize();
+            point.add(directionToMouse.multiplyScalar(attractionStrength));
+          }
+        }
+
+        geometry.setFromPoints(points);
+        lineRef.current.geometry = geometry;
+
+        if (isZapping) {
+          lineRef.current.material.uniforms.opacity.value = 0.2;
+        } else {
+          lineRef.current.material.uniforms.opacity.value = 0.6;
+        }
+      }
+    };
+
+    animate();
+  }, [isZapping, points, mouse]);
+
+  // Updated shader with improved noise and plasma effect
+  const material = new THREE.ShaderMaterial({
+    vertexShader: `
+      varying vec3 vPosition;
+      void main() {
+        vPosition = position;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vPosition;
+      uniform float opacity;
+      uniform float time;
+
+      // Improved noise function for plasma look
+      float noise(vec3 p) {
+        return sin(p.x * 0.3 + p.y * 0.5 + p.z * 0.8 + time) * 0.1 + 0.1;
+      }
+
+      void main() {
+        // Dynamic color based on position and time
+        float distance = length(vPosition);
+        vec3 color = vec3(0.3, 0.1, 0.8) * (2.0 - distance * 0.1);  // Base color for plasma
+        color += vec3(0.3, 0.4, 0.4) * noise(vPosition) * 1.0;  // Add noise effect for electric arcs
+
+        // Fading effect based on distance
+        gl_FragColor = vec4(color, opacity);
+      }
+    `,
+    uniforms: {
+      opacity: { value: 0.5 },
+      time: { value: 0 },
+    },
+    transparent: true,
+  });
+
+  useEffect(() => {
+    const updateTime = () => {
+      if (lineRef.current && lineRef.current.material) {
+        lineRef.current.material.uniforms.time.value = Date.now() * 0.02;
+      }
+      requestAnimationFrame(updateTime);
+    };
+    updateTime();
+  }, []);
+
+  return (
+    <>
+      <line ref={lineRef} geometry={geometry} material={material} />
+    </>
+  );
+};
 
 export default ElectricCurrent;

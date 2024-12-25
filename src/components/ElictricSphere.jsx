@@ -69,7 +69,7 @@ const ElectricSphere = ({ position = [0, 1, 2], logoUrl }) => {
         roughness={0.5}
         metalness={0.5} 
         map={texture}
-        color="orange"
+        color="white"
         opacity={0.4}/>
         
       </mesh>

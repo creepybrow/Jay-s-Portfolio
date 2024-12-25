@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { Html } from '@react-three/drei'; // Ensure this is imported
 
-const CrazyBall2 = ({ position = [5, -1, 5], logoUrl }) => {
+const CrazyBall2 = ({ position = [-50, -1, 20], logoUrl }) => {
   const meshRef = useRef();
   const [showInfo, setShowInfo] = useState(false);
   const [texture, setTexture] = useState(null);
@@ -19,10 +19,10 @@ const CrazyBall2 = ({ position = [5, -1, 5], logoUrl }) => {
   // Floating animation using useFrame
   useFrame(() => {
     if (meshRef.current) {
-      const time = Date.now() * 0.001;
-      meshRef.current.position.y = Math.cos(time + position[1]) * 19 + position[1];
-      meshRef.current.position.x = -15, Math.sin(time + position[1] * 2 + position[1]);
-      meshRef.current.position.z = Math.sin(time + position[1]) * 10 + position[0];
+      const time = Date.now() * 0.0007;
+      meshRef.current.position.y = Math.cos(time + position[1]) * 18 + position[1];
+      meshRef.current.position.x = Math.sin(time + position[2] * 6 + position[0]);
+      meshRef.current.position.z = Math.sin(time + position[1]) * 15 + position[1];
     }
   });
 

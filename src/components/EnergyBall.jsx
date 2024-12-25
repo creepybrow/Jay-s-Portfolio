@@ -22,7 +22,7 @@ const EnergyBall = ({ position = [-18, 10, 2], logoUrl }) => {
       const time = Date.now() * 0.001;
       meshRef.current.position.x = Math.cos(time + position[1]-11)* 18 + position[0];
       meshRef.current.position.y = Math.sin(time + position[0]+15)* 8 + position[1];
-      meshRef.current.position.z = Math.cos(time + position[1]) * 18 + position[2];
+      meshRef.current.position.z = Math.cos(time + position[0]) * 12 + position[2];
     }
   });
 
@@ -40,7 +40,7 @@ const EnergyBall = ({ position = [-18, 10, 2], logoUrl }) => {
         roughness={0.8}
         metalness={1.1} 
         map={texture}
-        color="red"
+        color="blue"
         opacity={1}/>
         
       </mesh>

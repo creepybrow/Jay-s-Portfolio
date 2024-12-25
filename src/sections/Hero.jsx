@@ -6,7 +6,6 @@ import {Leva, useControls} from "leva";
 import { useMediaQuery } from 'react-responsive'
 import { calculateSizes } from '../constants/index.js'
 import { useGSAP } from '@gsap/react'
-import FloatingBubble from '../components/Bubble.jsx'
 import ElectricSphere from '../components/ElictricSphere.jsx'
 import Ball from '../components/Ball.jsx'
 import Companion from '../components/Companion.jsx'
@@ -14,7 +13,6 @@ import CrazyBall from '../components/CrazyBall.jsx'
 import CrazyBall2 from '../components/CrazyBall2.jsx';
 import EnergyBall from '../components/EnergyBall.jsx';
 import ElectricCurrent from '../components/ElectricCurrent.jsx';
-import PlasmaBall from '../components/Bubble.jsx'
 
 
 const Hero = () => {
@@ -50,20 +48,12 @@ const sizes = calculateSizes(isSmall,)
               <Suspense fallback={<CanvasLoader/>}>
              <PerspectiveCamera makeDefault position={[5,5,40]}/>
              <group>
-                {/* <FloatingBubble/> */}
-                {/* <PlasmaBall/> */}
-                {/* <FloatingLogo/> */}
-                {/* <BubbleCluster/> */}
-                <ElectricSphere/>
-                <CrazyBall/>
-                <CrazyBall2/>
+                {/* <ElectricSphere/> */}
+                {/* <CrazyBall/> */}
+                {/* <CrazyBall2/> */}
                 <Ball/>
-                <EnergyBall/>
-                 <Companion
-                style={{position:'relative',
-                  pointerEvents:'auto',
-                  zIndex:1
-                }}/>             
+                {/* <EnergyBall/> */}
+                <ElectricCurrent/>
              </group>
              <ambientLight intensity={0.1}/>
              <directionalLight position={[15,8,25]} intensity={20}/>

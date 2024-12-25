@@ -54,7 +54,7 @@ const Navbar = () => {
   return (
     <header className='nav-bar__header'>
         <NavLink to="/" className="nav-link">
-            <p className=''>JS</p>
+            <p className=''>Home</p>
         </NavLink>
         <NavLink to="/about" className="nav-link">
             About

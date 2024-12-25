@@ -22,7 +22,7 @@ const ShootingStar = ({ position, speed, color }) => {
   return (
     <mesh ref={ref} position={position}>
       <sphereGeometry args={[0.02, 12, 16]} />
-      <meshStandardMaterial color={color} emissive="red" emissiveIntensity={5} />
+      <meshStandardMaterial color={color} emissive="blue" emissiveIntensity={5} />
     </mesh>
   );
 };

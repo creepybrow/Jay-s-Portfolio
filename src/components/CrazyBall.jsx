@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { Html } from '@react-three/drei'; // Ensure this is imported
 
-const CrazyBall = ({ position = [0, 1, 2], logoUrl }) => {
+const CrazyBall = ({ position = [-50, 1, 2], logoUrl }) => {
   const meshRef = useRef();
   const [showInfo, setShowInfo] = useState(false);
   const [texture, setTexture] = useState(null);
@@ -21,8 +21,8 @@ const CrazyBall = ({ position = [0, 1, 2], logoUrl }) => {
     if (meshRef.current) {
       const time = Date.now() * 0.001;
       meshRef.current.position.y = Math.sin(time + position[2]) * 16 + position[2];
-      meshRef.current.position.x = -20, Math.cos(time + position[0] * 10 - position[0]);
-      meshRef.current.position.z = Math.sin(time + position[1]) * 15 + position[0];
+      meshRef.current.position.x = Math.cos(time + position[0] * 1 - position[1]);
+      meshRef.current.position.z = Math.sin(time + position[1]) * 1 + position[1];
     }
   });
 
@@ -34,13 +34,13 @@ const CrazyBall = ({ position = [0, 1, 2], logoUrl }) => {
   return (
     <>
       <mesh ref={meshRef} position={position} onClick={handleClick}>
-        <sphereGeometry args={[2, 25, 32]} />
+        <sphereGeometry args={[5, 25, 32]} />
         <meshStandardMaterial 
         attach="material"
         roughness={0.8}
         metalness={1.1} 
         map={texture}
-        color="red"
+        color="yellow"
         opacity={1}/>
         
       </mesh>

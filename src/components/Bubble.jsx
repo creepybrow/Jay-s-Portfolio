@@ -31,7 +31,7 @@ const FloatingBubble = ({ position = [5, 1,2,] }) => {
     <mesh ref={meshRef} position={position}>
       <sphereGeometry args={[10, 32, 32]} />
       <meshStandardMaterial
-        color="silver"
+        color="red"
         roughness={1.1}
         metalness={1.6}
         transparent
