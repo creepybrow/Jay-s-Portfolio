@@ -68,7 +68,6 @@ const ProjectItem = ({ title, description, link, projectName, imgSrc, imgAlt }) 
 const Projects = () => {
   return (
     <div className='projects-container'>
-
       <div className='project-container'>
         <h1 className='project-header'>My Projects</h1>
         <div className='links-container'>

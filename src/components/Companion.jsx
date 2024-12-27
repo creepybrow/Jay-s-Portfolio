@@ -2,13 +2,12 @@ import { Html } from "@react-three/drei";
 import React, { useRef, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import Navbar from "../sections/Navbar";
+
 
 const Companion = ({ position = [5, 10, -5], logoUrl }) => {
   const meshRef = useRef();
   const topEyelidRef = useRef();
   const bottomEyelidRef = useRef();
-  const [showNav, setShowNav] = useState(false);
   const [isBlinking, setIsBlinking] = useState(false);
 
   const blinkDuration = 5000; // Blink duration (in ms)
@@ -103,11 +102,6 @@ const Companion = ({ position = [5, 10, -5], logoUrl }) => {
             position={calculateEyelidPosition(-sphereRadius)}
           ></mesh>
         </mesh>
-        {showNav && (
-          <Html position={[position[0] - 10, position[1] + 2, position[2]]}>
-            <Navbar />
-          </Html>
-        )}
       </mesh>
     </>
   );

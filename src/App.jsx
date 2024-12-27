@@ -10,7 +10,6 @@ const App = () => {
       <main className="bg-slate-300/20">
       <Router>
         <Navbar/>
-        {/* <Hero/> */}
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/about" element={<About/>}/>

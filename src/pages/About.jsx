@@ -29,18 +29,19 @@ const About = () => {
       {/*Stone-like Containers*/}
         <div className='Plan-Container'>
           <div className='Plan-Box'>
-            <p>The Plan</p>
+            <h1>CONNECT</h1>
+            <p>Contact by e-mail. Tell me what you like about my work and how I may be able to assist you.</p>
           </div>
           <div className='Update-Box'>
-            <h1>We Chat</h1>
-            <p>Contact me through e-mail, and then I get back. We set up a meeting after.
+            <h1>PLAN</h1>
+            <p>We go over your goals, and lay out what you need. The information you want displayed and how you want it presented. Coding can be very time consuming without a proper sturcture.
+                During this time, if we're both comfortable with the project, I begin coding and update you. We're a team now, and I plan on making our business worth it.
             </p>
           </div>
           <div className='Publish-Box'>
             <h1>PUBLISH</h1>
             <p>This is the phase in which you are most comfortable with the design.
-              Once it's agreed on the name of your website and the results are solid,
-              I present YOUR website to the world!
+              Once we both agree on the work I have made, I will present it to the world for everyone to see. I do the heavy lifting, and you sit back as your website brings in customers.
             </p>
           </div>
         </div>
