@@ -2,16 +2,10 @@ import { PerspectiveCamera, Stars } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React, { Suspense, useState } from 'react'
 import CanvasLoader from '../components/CanvasLoader'
-import {Leva, useControls} from "leva";
 import { useMediaQuery } from 'react-responsive'
 import { calculateSizes } from '../constants/index.js'
 import { useGSAP } from '@gsap/react'
-import ElectricSphere from '../components/ElictricSphere.jsx'
 import Ball from '../components/Ball.jsx'
-import Companion from '../components/Companion.jsx'
-import CrazyBall from '../components/CrazyBall.jsx'
-import CrazyBall2 from '../components/CrazyBall2.jsx';
-import EnergyBall from '../components/EnergyBall.jsx';
 import ElectricCurrent from '../components/ElectricCurrent.jsx';
 
 
@@ -48,11 +42,7 @@ const sizes = calculateSizes(isSmall,)
               <Suspense fallback={<CanvasLoader/>}>
              <PerspectiveCamera makeDefault position={[5,5,40]}/>
              <group>
-                {/* <ElectricSphere/> */}
-                {/* <CrazyBall/> */}
-                {/* <CrazyBall2/> */}
                 <Ball/>
-                {/* <EnergyBall/> */}
                 <ElectricCurrent/>
              </group>
              <ambientLight intensity={0.1}/>

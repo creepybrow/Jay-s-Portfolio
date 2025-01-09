@@ -6,23 +6,7 @@ import ShootingStar from "../components/Star.jsx";
 import gsap from "gsap";
 import React from "react";
 import { TextGeometry } from "three/examples/jsm/Addons.js";
-
-const IntroductionStar = () => {
-  const [font, setFont] = useState(null);
-
-  return (
-    <mesh>
-      <TextGeometry
-        attach="geometry"
-        args={[
-          "Hello! I'm Jay Stewart, a passionate web developer. I could be working for you. If you like what you see, let's connect!",
-          { font, size: 1, height: 0.1 },
-        ]}
-      />
-      <meshStandardMaterial attach="material" color="#00ff00" />
-    </mesh>
-  );
-};
+import emailjs from "emailjs-com";
 
 const skillData = {
   HTML: {
@@ -53,95 +37,110 @@ const skillData = {
 
 const Home = () => {
   const [activeSkill, setActiveSkill] = useState(null); // Track clicked skill
+  const [activeTitle, setActiveTitle] = useState(null); // Track moving title
+  const [showContactForm, setShowContactForm] = useState(false);
+
+  // Handle the contact form visibility and animations with GSAP
+  useEffect(() => {
+    // When the form is shown, animate it in
+    if (showContactForm) {
+      gsap.to(".contact-form-modal", {
+        opacity: 1,
+        y: 5,
+        duration: 0.5,
+        ease: "power2.out",
+      });
+    } else {
+      // When the form is hidden, animate it out
+      gsap.to(".contact-form-modal", {
+        opacity: 0,
+        y: 50,
+        duration: 0.5,
+        ease: "power2.in",
+      });
+    }
+  }, [showContactForm]); // Trigger animation on showContactForm change
+
+  // Handle form submission
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    emailjs
+      .sendForm("service_20jpaxp", "template_r6z69ye", form, "YOUR_USER_ID")
+      .then(
+        (result) => {
+          alert("Message sent successfully!");
+          form.reset();
+          setShowContactForm(false); // Hide the form after submission
+        },
+        (error) => {
+          alert("Failed to send message. Please try again later.");
+        }
+      );
+  };
 
   // Handle the click event to toggle skills
   const handleSkillClick = (skill) => {
-    // Check if the clicked skill is already active
     if (activeSkill === skill) {
-      // If the skill is clicked again, reset everything
-      gsap.to(".skill", {
-        x: 0,
-        opacity: 1,
-        duration: 0.5,
-        stagger: 0.1,
-      });
+      gsap.to(".skill", { x: 0, opacity: 1, duration: 0.5, stagger: 0.1 });
       gsap.to(".skill-info-container", {
         opacity: 0,
         duration: 0.5,
-        onComplete:() => setActiveSkill(null),
+        ease: "power1.in",
+        onComplete: () => setActiveSkill(null),
       });
       gsap.to(".skill-title-container", {
-        opacity: 1, // Make the title visible again
-        y: 0, // Move title back to original position
-        duration: 1,
+        opacity: 1,
+        duration: 0.5,
         ease: "power2.out",
       });
-      setActiveSkill(null); // Reset active skill
     } else {
-      // 1. Animate the other skills to move away when one is clicked
-      gsap.to(".skill", {
-        x: (index) =>
-          index === Object.keys(skillData).indexOf(skill)
-            ? 0
-            : Math.random() * 2000 - 500,
-        opacity: (index) =>
-          index === Object.keys(skillData).indexOf(skill) ? 1 : 0,
-        duration: 1,
-        stagger: 0.1,
-      });
-
-      // 2. Move the skill title into the skill-info-container and fade out the skill
-      gsap.to(".skill-title-container", {
-        opacity: 0, // Fade out the title initially
-        duration: 0.8, // Short delay before the skill title fades
-      });
-
-      gsap.to(".skill", {
-        opacity: 0, // Fade out the skill from the list
-        duration: 0.1,
-      });
-
-      // 3. Move the title to the skill-info-container and make it visible again
-      gsap.to(".skill-title-container", {
-        opacity: 1, // Fade in the skill title
-        y: 0,
-        x: 0, // Move it back to its position in the container
-        duration: 0.2,
-        ease: "power1.inOut",
-      });
-
-      // 4. Fade in the skill description
+      gsap.to(".skill", { opacity: 0, duration: 0.1 });
+      gsap.to(".skill-title-container", { opacity: 0, duration: 0.8 });
       gsap.to(".skill-description", {
         opacity: 1,
-        y: 0, // Fade the description into view
+        y: 0,
         duration: 1,
         ease: "power2.out",
       });
-
-      setActiveSkill(skill); // Set the active skill
+      setActiveSkill(skill);
     }
+  };
+
+  // Ensure clicking the title also toggles the state
+  const handleTitleClick = () => {
+    if (activeSkill) {
+      handleSkillClick(activeSkill);
+    }
+  };
+
+  const handleContactButtonClick = () => {
+    // Toggle the state when the button is clicked
+    setShowContactForm(!showContactForm);
   };
 
   return (
     <section id="home-page">
       <Hero />
       <div className="skill-wrapper">
+        <p className="skill-instruction">
+          My skills. Click on each to learn more.
+        </p>
         <ul className="skill-container">
           {Object.keys(skillData).map((skill, index) => (
             <li key={index} onClick={() => handleSkillClick(skill)}>
               <p className={`skill ${activeSkill === skill ? "active" : ""}`}>
                 {skill}
               </p>
-              
             </li>
           ))}
         </ul>
-
         {/* Skill Info Container Below Stars */}
         {activeSkill && (
           <div className="skill-info-container">
             {/* Title of the Skill that Moves into the Container */}
-            <div className="skill-title-container">
+            <div className="skill-title-container" onClick={handleTitleClick}>
               <h2 className="skill">{activeSkill}</h2>
             </div>
             {/* Description of the Skill */}
@@ -153,17 +152,13 @@ const Home = () => {
       </div>
       {/* 3D Scene with Canvas */}
       <div className="canvas-container">
-        <Canvas camera={{ near: 1, far: 1000 }}>
+        <Canvas camera={{ near: 1, far: 1000, position: "absolute", zIndex: 1 }}>
           <Suspense fallback={<Loader />}>
             <directionalLight position={[1, 10, 1]} intensity={1} />
             <ambientLight intensity={0.8} />
             <pointLight />
             <spotLight />
-            <hemisphereLight
-              skyColor="#b1e1ff"
-              groundColor="#00000"
-              intensity={1}
-            />
+            <hemisphereLight skyColor="#b1e1ff" groundColor="#00000" intensity={1} />
             {[...Array(10)].map((_, index) => (
               <ShootingStar
                 position={[
@@ -182,7 +177,36 @@ const Home = () => {
           <p id="introduction">Frontend Software Developer.</p>
           <p>I code and make unique experiences.</p>
           <p>If you like what you see, Let's chat!</p>
-          <button className="contact-btn">Contact Me</button>
+          <button
+            type="button"
+            onClick={handleContactButtonClick}
+          >
+            Contact Me
+          </button>
+
+          {/* Contact Form Modal */}
+          {showContactForm && (
+            <div className="contact-form-modal">
+              <form onSubmit={handleFormSubmit}>
+                <h3>Contact Me</h3>
+                <label>Name</label>
+                <input type="text" name="user_name" required />
+                <label>Email</label>
+                <input type="email" name="user_email" required />
+                <label>Message</label>
+                <textarea name="message" required></textarea>
+                <button type="submit">Send Message</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowContactForm(false); // Close the form
+                  }}
+                >
+                  Close
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       </div>
     </section>

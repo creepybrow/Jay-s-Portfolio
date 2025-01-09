@@ -75,16 +75,20 @@ text-align: center;
 .skill{
 display: flex;
 margin-left: 48px;
+align-items:center;
 justify-content: center;
-color:rgba(235, 72, 72, 0.897);
+color:rgba(46, 43, 43, 0.897);
 top:0;
 font-size: 3em;
-text-shadow: 4px 2px 20px rgba(235, 231, 230, 0.973);
+text-shadow: 4px 2px 20px rgba(165, 42, 12, 0.973);
+border: 4px solid white;
+background: linear-gradient(to bottom, rgba(241, 231, 231, 0.7), rgba(219, 196, 196, 0.7));
 text-align: center;
 margin-left: 64px;
-
 }
-
+.skill:hover{
+  transform: translateY(2px);
+}
 .skill-logic{
   color:rgb(226, 26, 26);
   margin: 0 auto;
@@ -234,17 +238,15 @@ span:nth-child(13){
 }
 /*about section*/
 .about-section{
-  background: linear-gradient(to right, #444, #666);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height:100vh;
   color:white;
 }
 .about-me__container{
+  display: flex;
   text-align: center;
-  height:100vh;
   width:100%;
 }
 .about-me__para{
@@ -254,43 +256,47 @@ margin-bottom: 200px;
 }
 .about-skill__title{
   width:100%;
-  height:100vh;
   margin: 0 auto;
   font-weight: bold;
   justify-content: center;
-  align-content: center;
-  display:flex;
   font-size: 32px;
-  background: linear-gradient(to right, black, rgba(31, 30, 30, 0.932),rgb(201, 198, 198));
 }
 .projects-container{
-  display: flex;
-  position: relative;
+  position: absolute;
   background:black;
-  height:100vh;
-  width:100%;
-  overflow: hidden;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 .project-header{
+  margin-top: 90%;
+  margin-bottom: 150%;
   color:white;
-  width:150%;
-  display:flex;
+  display: flex;
   justify-content: center;
   font-size: 48px;
   font-weight: bold;
   letter-spacing: 1rem;
-  text-decoration: underline;
-  transform: translateY(100px);
-  transform: translateX(-500px);
-  text-shadow: 4px 2px 8px rgba(65, 189, 127, 0.952);
+  text-shadow: 4px 2px 20px rgba(233, 236, 235, 0.849);
 }
+.project-link{
+  color:white;
+  display: flex;
+  background-color:rgb(8, 8, 8);
+}
+.project-link:hover{
+  box-shadow: 0 8px 40px rgba(241, 239, 239, 0.911);
+}
+/*projects page*/
 .projects-container{
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width:100%;
+}
+.project-title{
+  font-size: 32px;
 }
 .hero-section{
   position: relative;
@@ -298,20 +304,17 @@ margin-bottom: 200px;
   background-size: cover;
 }
 .links-container{
-  position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: 10%;
-  left: 0;
-  width:100%;
+  background:linear-gradient(to right, rgba(185, 183, 183, 0.7));
+  width: 100%;
+  max-width: 1500px;
+  gap:250px;
   text-align: center;
-}
-.Year-one{
   color:white;
-  font-size: 32px;
 }
 .Year-two{
-  color:white;
+  color:rgb(241, 231, 231);
   font-size:48px;
   font-weight: bold;
 }
@@ -384,84 +387,98 @@ margin-bottom: 200px;
  margin-bottom: 24px;
 }
 .boss-title{
+  margin-bottom: 50%;
   color:rgba(250, 235, 215, 0.712);
   text-shadow: 15px 15px 15px rgba(253, 14, 146, 0.863);
   font-size: 48px;
   font-weight: bold;
   letter-spacing: 0.5em;
 }
+.boss-description{
+  color:Red;
+  font-size: 2em;
+  margin-bottom: 50%;
+}
+.AI{
+  color:gray;
+  font-size: 2em;
+}
 .Threejs{
-  color:red;
-  font-style: oblique;
+  color:rgb(31, 26, 26);
+  font-size: 2em;
+  font-style:italic;
+  font-weight: bold;
   margin-right:24px;
   margin-left:24px;
 }
 .about-react{
-  color:red;
+  color:rgb(27, 27, 27);
+  font-size: 2em;
+  font-weight: bold;
   margin-left:24px;
   margin-right:24px;
 }
 .hard-language{
-  position: relative;
-  display:inline-block;
+  position: absolute;
   color:rgb(244, 248, 245);
   text-shadow: -48px 2px 5px rgba(10, 10, 10, 0.863);
-  font-size: 2em;
-  margin-left:48px;
+  font-size: 4em;
+  margin-left:60px;
   animation: bounce 5s linear infinite;
 }
 .floating-plus{
   position: absolute;
-  left:0;
-  bottom:0;
+  right:15px;
+  bottom:50px;
   font-size: 0.75em;
-  color:rgb(51, 49, 49);
-  text-shadow: 8px 20px 150px rgba(43, 42, 43, 0.192);
-  animation:floatSmoke 10s ease-in-out infinite;
+  color:rgb(70,68,68);
+  text-shadow: 0px 0px 5px rgba(231, 226, 231, 0.192);
+  animation:floatSmoke 5s ease infinite;
 }
    @keyframes floatSmoke{
-    0%{transform: translateY(0); opacity: 1;}
-    25%{transform: translateY(-40px); opacity:0.8;}
-    50%{transform: translateY(-80px); opacity: 0.5;}
-    75%{transform: translateY(-120px); opacity: 0.8;}
-    100%{transform: translateY(-160px); opacity: 1;}
+    0%{transform: translateX(-10px); opacity: 1;}
+    15%{transform: translateY(-100px); opacity:0.8}
+    25%{transform: translateY(-150px); opacity:0.5;}
+    50%{transform: translateY(-180px); opacity: 0.2;}
+    75%{transform: translateY(-190px); opacity: 0.1;}
+    100%{transform: translateY(-250px); opacity: 0;}
    }
 .floating-plus:nth-child(1){
-  animation-delay:0s;
+  animation-delay:0.1s;
 }
 .floating-plus:nth-child(2){
   animation-delay:0.2s;
 }
 .floating-plus:nth-child(3){
-  animation-delay:0.8s;
+  animation-delay:0.1s;
 }
 .floating-plus:nth-child(4){
-  animation-delay:1.5s;
+  animation-delay:0.5s;
 }
 .floating-plus:nth-child(5){
-  animation-delay:1.5s;
+  animation-delay:0.2s;
 }
 .floating-plus:nth-child(6){
   animation-delay:2s;
 }
 .floating-plus:nth-child(7){
-  animation-delay:2.5s;
+  animation-delay:0.5s;
 }
 .floating-plus:nth-child(8){
-  animation-delay:3s;
+  animation-delay:0.8s;
 }
 @keyframes bounce{
   0%{
     transform: translateY(0);
   }
   30%{
-    transform:translateY(40px);
+    transform:translateY(-50px);
   }
   50%{
     transform:translateY(0);
   }
   70%{
-    transform:translateY(-40px);
+    transform:translateY(-20px);
   }
   100%{
     transform:translateY(0);
@@ -475,45 +492,49 @@ margin-bottom: 200px;
 }
 .operation-title{
   font-size: 32px;
-  margin-bottom: 40px;
+  margin-top: 10%;
   text-decoration: underline;
 }
 .Plan-Container{
  display: flex;
- justify-content: space-around;
- flex-wrap: wrap;
- gap:20px;
+ flex-direction: column;
+ align-items: center;
+ gap:42px;
 }
 .Plan-Box, .Update-Box, .Publish-Box{
-  background: #555;
-  color:white;
-  border-radius: 15px;
-  padding: 40px;
-  box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+  color:rgb(133, 122, 122);
+  border-radius: 25px;
+  padding: 150px;
   transition: transform 0.3s ease;
-  width:30%;
+  width:50%;
+  height:500px;
   text-align: center;
+  
 }
 .Plan-Box:hover, .Update-Box:hover, .Publish-Box:hover{
-  transform: scale(1.5);
+  transform: scale(1.1);
 }
 .Plan-Box p, .Update-Box p, .Publish-Box p{
-  font-size: 18px;
+  font-size: 24px;
 }
 .Plan-Title{
-  font-family: 4em;
+  font-family: 1em;
   position: absolute;
   color:rgb(248, 236, 236);
   background-color: rgb(49, 47, 47);
   overflow: hidden;
 }
 .Update-Box{
-  background: linear-gradient(135deg, #555, #333);
+  background: linear-gradient(115deg, #161616, #8b3939);
   box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
 }
 .Publish-Box{
-  background: linear-gradient(135deg, #777, #555);
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #131212, #9e3636);
+  box-shadow: inset 0 0 20px rgba(216, 28, 28, 0.3);
+}
+.Plan-Box{
+  background: linear-gradient(135deg, #161616,#8b3939);
+  box-shadow: inset 0 0 20px rgba(216, 28, 28, 0.3);
 }
 .Talk{
   color:white;
@@ -527,14 +548,14 @@ margin-bottom: 200px;
   color:white;
 }
 .publish{
-  background-color: rgb(68, 64, 64);
+  background-color: rgb(37, 24, 24);
   height:60px;
   color:black;
   font-weight: bold;
   font-size: 2em;
 }
 .about-me__container{
-  background: linear-gradient(to right, black, rgba(31, 30, 30, 0.932),rgb(201, 198, 198));
+  background: linear-gradient(to bottom, rgb(78, 77, 77), rgba(160, 58, 58, 0.932),rgb(90, 35, 35));
   display: block;
 }
 .Apple_website{
@@ -584,6 +605,7 @@ margin-bottom: 200px;
   position:relative;
   display: flex;
   height:100vh;
+  z-index: 1;
 }
 .overlay{
   display: flex;
@@ -606,12 +628,80 @@ margin-bottom: 200px;
   0 0 20px rgba(233, 27, 27, 0.11);
   pointer-events: none;
 }
-.contact-btn{
+.button{
+  position: absolute;
   margin-top: 24px;
   border: 4px solid rgb(238, 234, 234);
-  background-color: rgba(8, 8, 8, 0.24);
+  background-color: rgba(236, 224, 224, 0.973);
   cursor:pointer;
   font-size: 1em;
-  color:rgb(78, 78, 78);
+  color:rgba(236, 231, 231, 0.938);
   width:100%;
+  pointer-events:auto;
+  z-index: 9999;
+}
+.skill-instruction{
+  color:white;
+  font-size: 32px;
+  margin-bottom: 32px;
+}
+.Question-Mark{
+  font-size: 4em;
+  margin-top: 20%;
+  font-weight: bold;
+  font-style:oblique;
+  margin-bottom: 50%;
+}
+.Job{
+  color:white;
+  border-radius: 50%;
+  font-size: 6em;
+  margin-bottom: 50%;
+  text-decoration: underline;
+}
+.project-description{
+  font-size: 32px;
+  text-shadow: 2px 2px 10px rgba(241, 239, 239, 0.911);
+}
+/*contact form*/
+.contact-form-modal{
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  transform: translate(-50%, -50%);
+  background:rgba(14, 13, 13, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: auto;
+}
+.contact-form-modal{
+  z-index: 9999;
+}
+.contact-form-modal input,
+.contact-form-modal textarea{
+  width:100%;
+  padding: 10px;
+  margin:10px 0;
+  border:1px solid #ddd;
+  border-radius:4px;
+}
+.contact-form-modal button{
+  padding:10px 20px;
+  margin-top:10px;
+  background-color: #007bff;
+  color:white;
+  border:none;
+  border-radius: 4px;
+  cursor:pointer;
+}
+.contact-form-modal button:hover{
+  background-color: #0056b3;
+}
+.contact-form-modal button[type="button"]{
+  background-color: transparent;
+  color:#007bff;
+  border:1px solid #007bff;
 }
