@@ -5,7 +5,6 @@ import Hero from "../sections/Hero.jsx";
 import ShootingStar from "../components/Star.jsx";
 import gsap from "gsap";
 import React from "react";
-import { TextGeometry } from "three/examples/jsm/Addons.js";
 import emailjs from "emailjs-com";
 
 const skillData = {
@@ -37,7 +36,6 @@ const skillData = {
 
 const Home = () => {
   const [activeSkill, setActiveSkill] = useState(null); // Track clicked skill
-  const [activeTitle, setActiveTitle] = useState(null); // Track moving title
   const [showContactForm, setShowContactForm] = useState(false);
 
   // Handle the contact form visibility and animations with GSAP
@@ -46,18 +44,24 @@ const Home = () => {
     if (showContactForm) {
       gsap.to(".contact-form-modal", {
         opacity: 1,
-        y: 5,
+        y: 1,
         duration: 0.5,
         ease: "power2.out",
+        visibility: "visible",
+        pointerEvents: "auto", // Allow interaction when modal is visible
       });
+      document.body.style.overflow="hidden";
     } else {
       // When the form is hidden, animate it out
       gsap.to(".contact-form-modal", {
         opacity: 0,
-        y: 50,
+        y: -50,
         duration: 0.5,
         ease: "power2.in",
+        visibility: "visible", // Hide the modal completely
+        pointerEvents: "none", // Disable interaction when modal is hidden
       });
+      document.body.style.overflow = "auto";
     }
   }, [showContactForm]); // Trigger animation on showContactForm change
 
@@ -72,7 +76,7 @@ const Home = () => {
         (result) => {
           alert("Message sent successfully!");
           form.reset();
-          setShowContactForm(false); // Hide the form after submission
+          setShowContactForm(false); // Close the form after submission
         },
         (error) => {
           alert("Failed to send message. Please try again later.");
@@ -116,13 +120,14 @@ const Home = () => {
   };
 
   const handleContactButtonClick = () => {
-    // Toggle the state when the button is clicked
-    setShowContactForm(!showContactForm);
+    // Toggle the modal visibility when the button is clicked
+    console.log("contact button clicked");
+    setShowContactForm((prev) => !prev);
   };
 
   return (
     <section id="home-page">
-      <Hero />
+          <Hero />
       <div className="skill-wrapper">
         <p className="skill-instruction">
           My skills. Click on each to learn more.
@@ -154,20 +159,17 @@ const Home = () => {
       <div className="canvas-container">
         <Canvas camera={{ near: 1, far: 1000, position: "absolute", zIndex: 1 }}>
           <Suspense fallback={<Loader />}>
+
             <directionalLight position={[1, 10, 1]} intensity={1} />
-            <ambientLight intensity={0.8} />
+            <ambientLight intensity={1} />
             <pointLight />
             <spotLight />
             <hemisphereLight skyColor="#b1e1ff" groundColor="#00000" intensity={1} />
-            {[...Array(10)].map((_, index) => (
+            {[...Array(100)].map((_, index) => (
               <ShootingStar
-                position={[
-                  Math.random() * 20 + 1,
-                  Math.random() * 100 + 100,
-                  Math.random() * -10,
-                ]}
-                speed={100 + Math.random() * 80}
-                key={index}
+              position={[Math.random() * 20 + 1, Math.random() * 100 + 100, Math.random() * -10]}
+              speed={100 + Math.random() * 80}
+              key={index}
               />
             ))}
           </Suspense>
@@ -177,18 +179,16 @@ const Home = () => {
           <p id="introduction">Frontend Software Developer.</p>
           <p>I code and make unique experiences.</p>
           <p>If you like what you see, Let's chat!</p>
-          <button
-            type="button"
-            onClick={handleContactButtonClick}
+          <button  id="button" className="contact-btn" type="button" onClick={()=> handleContactButtonClick()} // Show the modal on button click
           >
-            Contact Me
+            I'm Just One Click Away
           </button>
 
           {/* Contact Form Modal */}
-          {showContactForm && (
+            {/* GSAP animations will handle visibility and opacity */}
             <div className="contact-form-modal">
+            {showContactForm && (
               <form onSubmit={handleFormSubmit}>
-                <h3>Contact Me</h3>
                 <label>Name</label>
                 <input type="text" name="user_name" required />
                 <label>Email</label>
@@ -196,17 +196,18 @@ const Home = () => {
                 <label>Message</label>
                 <textarea name="message" required></textarea>
                 <button type="submit">Send Message</button>
+                {/* Close button toggles the state to false */}
                 <button
+                  id="button"
+                  className="close-btn"
                   type="button"
-                  onClick={() => {
-                    setShowContactForm(false); // Close the form
-                  }}
+                  onClick={() => setShowContactForm(false)} // Close the modal
                 >
                   Close
                 </button>
               </form>
+            )}
             </div>
-          )}
         </div>
       </div>
     </section>

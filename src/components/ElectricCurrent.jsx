@@ -10,9 +10,9 @@ class ElectricPath extends THREE.Curve {
   }
 
   getPoint(t) {
-    const time = Date.now() * 0.00001;
-    const x = Math.sin(t * 60 + time) * (60 + Math.sin(time * 100) * 2);  // Pulsating X position
-    const y = Math.cos(t * 60 + time) * (60 + Math.cos(time * 100) *2); // Pulsating Y position
+    const time = Date.now() * 0.00007;
+    const x = Math.sin(t * 60 + time) * (60 + Math.sin(time * 10) * 2);  // Pulsating X position
+    const y = Math.cos(t * 60 + time) * (60 + Math.cos(time * 10) *2); // Pulsating Y position
     const z = t * 1;  // Linear progression along Z axis (you can make this nonlinear for more dynamic movement)
     return new THREE.Vector3(x, y, z);
   }
@@ -26,8 +26,10 @@ const ElectricCurrent = ({ camera }) => {
   const attractionStrength = 1; // Adjust attraction strength
   const { camera: contextCamera } = useThree();
   const currentCamera = camera || contextCamera;
-
   const raycaster = new THREE.Raycaster();
+
+
+
 
   useEffect(() => {
     if (!currentCamera) {
@@ -67,10 +69,10 @@ const ElectricCurrent = ({ camera }) => {
 
       // Update the tube geometry
       if (tubeRef.current) {
-        tubeRef.current.geometry = new THREE.TubeGeometry(path, 200, 100, 10, false);
+        tubeRef.current.geometry = new THREE.TubeGeometry(path, 210, 110, 10, false);
        const animate = () => {
         requestAnimationFrame(animate);
-        const time = Date.now() * 0.02;
+        const time = Date.now() * 0.2;
         path.getPoint(time);
         if(tubeRef.current){
           tubeRef.current.material.uniforms.time.value = time;
@@ -89,7 +91,7 @@ const ElectricCurrent = ({ camera }) => {
       varying vec3 vPosition;
       void main() {
         vPosition = position;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 0.2);
       }
     `,
     fragmentShader: `
@@ -99,19 +101,19 @@ const ElectricCurrent = ({ camera }) => {
 
       // Improved noise function for plasma look
       float noise(vec3 p) {
-        return sin(p.x * 10.5 + p.y * 60.1 + p.z * 10.8 + time) * 0.1 + 10.1;
+        return sin(p.x * 500.8 + p.y * 300.3 + p.z * 100.8 + time) * 200.1 + 500.1;
       }
 
       void main() {
         float distance = length(vPosition);
-        vec3 color = vec3(10.5, 40.2, 10.8) * (0.9 - distance * 0.9); // Base color for plasma
-        color += vec3(14.7, 5.1, 100.3) * noise(vPosition) * 4.6; // Add noise effect for electric arcs
+        vec3 color = vec3(1.5, 20.2, 100.8) * (1.9 - distance * 1.3); // Base color for plasma
+        color += vec3(8.7, 1000.1, 500.3) * noise(vPosition) * 100.6; // Add noise effect for electric arcs
         gl_FragColor = vec4(color, opacity);
       }
     `,
     uniforms: {
-      opacity: { value: 0.8 },
-      time: { value: 0 },
+      opacity: { value: 0.1 },
+      time: { value: 1 },
     },
     transparent: true,
   });

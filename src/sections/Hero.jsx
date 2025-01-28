@@ -40,13 +40,14 @@ const sizes = calculateSizes(isSmall,)
           gl={{alpha:true}} // enable alpha for tranparency
           >
               <Suspense fallback={<CanvasLoader/>}>
-             <PerspectiveCamera makeDefault position={[5,5,40]}/>
+             <PerspectiveCamera makeDefault position={[6,6,60]}/>
              <group>
                 <Ball/>
                 <ElectricCurrent/>
+                
              </group>
-             <ambientLight intensity={0.1}/>
-             <directionalLight position={[15,8,25]} intensity={20}/>
+             <ambientLight intensity={0.8}/>
+             <directionalLight position={[5,18,15]} intensity={40}/>
               </Suspense>
           </Canvas>
     </section>

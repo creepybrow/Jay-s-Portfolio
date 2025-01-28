@@ -23,10 +23,10 @@ const Ball = ({ position = [5, 5, 2], logoUrl }) => {
       const time = Date.now() * 0.001;
       const centerX = window.innerWidth/2;
       const centerY = window.innerHeight/2;
-      const scale = 10 + Math.sin(time)* 1;
+      const scale = 2 + Math.sin(time)* 1;
 
       const colorValue = Math.abs(Math.sin(time));
-      meshRef.current.material.color.setRGB(0.01 + 0.1 * colorValue, 0.1, 0.1);
+      meshRef.current.material.color.setRGB(0.01 + 0.8 * colorValue, 0.0, 0.0);
     }
   });
 
@@ -38,7 +38,7 @@ const Ball = ({ position = [5, 5, 2], logoUrl }) => {
   return (
     <>
       <mesh ref={meshRef} position={position}>
-        <sphereGeometry args={[5, 32, 32]} />
+        <sphereGeometry args={[3, 32, 32]} />
         <meshStandardMaterial 
         attach="material"
         roughness={0.7}

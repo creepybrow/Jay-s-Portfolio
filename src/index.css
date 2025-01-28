@@ -605,7 +605,7 @@ margin-bottom: 200px;
   position:relative;
   display: flex;
   height:100vh;
-  z-index: 1;
+  z-index: 100;
 }
 .overlay{
   display: flex;
@@ -614,32 +614,24 @@ margin-bottom: 200px;
   position: absolute;
   font-style: italic;
   width:100%;
-  max-width: 800px;
   height:100vh;
   font-size: 32px;
   line-height: 2.5;
-  top:50%;
-  left:40%;
-  color:rgb(182, 174, 174);
-  text-shadow: 0 0 10px rgba(168,16,245,0.9),
-  0 0 15px rgba(169, 19, 245, 0.897),
-  0 0 30px rgba(240, 30, 30, 0.8),
-  0 0 15px rgba(224,42,42,0.8),
-  0 0 20px rgba(233, 27, 27, 0.11);
-  pointer-events: none;
+  top:80%;
+  color:rgb(88, 86, 86);
+  pointer-events: auto;
 }
-.button{
-  position: absolute;
-  margin-top: 24px;
-  border: 4px solid rgb(238, 234, 234);
-  background-color: rgba(236, 224, 224, 0.973);
+/* .contact-btn{
+  position: relative;
+  margin-top: 10%;
+  border: 20px solid rgb(238, 234, 234);
+  background-color: red;
   cursor:pointer;
   font-size: 1em;
-  color:rgba(236, 231, 231, 0.938);
+  color:white;
   width:100%;
-  pointer-events:auto;
   z-index: 9999;
-}
+} */
 .skill-instruction{
   color:white;
   font-size: 32px;
@@ -665,43 +657,76 @@ margin-bottom: 200px;
 }
 /*contact form*/
 .contact-form-modal{
+  display: flex;
   position: fixed;
   top:0;
-  left:0;
+  left:50%;
   right:0;
   bottom:0;
   transform: translate(-50%, -50%);
-  background:rgba(14, 13, 13, 0.8);
+  width:100%;
+  height:100vh;
+  background: rgb(0, 0, 0);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(179, 179, 179, 0.966);
+  transition:opacity 0.5s ease, visibility 0.5s ease;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  pointer-events: auto;
+  overflow: none;
+}
+@media(min-width:768px){
+  .contact-form-modal{
+    position:fixed;
+    top:50%;
+    left:50%;
+  }
+}
+@media(min-width:480px){
+  .contact-form-modal{
+    position: fixed;
+    top:50%;
+    left:50%;
+  }
 }
 .contact-form-modal{
   z-index: 9999;
 }
 .contact-form-modal input,
 .contact-form-modal textarea{
+  display: flex;
   width:100%;
-  padding: 10px;
+  max-width: 800px;
   margin:10px 0;
-  border:1px solid #ddd;
+  border:5px solid #1f1e1e;
+  background-color:black;
   border-radius:4px;
+  color:white;
 }
 .contact-form-modal button{
-  padding:10px 20px;
-  margin-top:10px;
-  background-color: #007bff;
+  background-color: #6b6c6d;
   color:white;
   border:none;
   border-radius: 4px;
   cursor:pointer;
 }
 .contact-form-modal button:hover{
-  background-color: #0056b3;
+  background-color: #3f4041;
 }
-.contact-form-modal button[type="button"]{
-  background-color: transparent;
-  color:#007bff;
-  border:1px solid #007bff;
+
+#button{
+  position: relative;
+  background-color: rgb(92, 87, 87);
+  box-shadow: #6c6d6e;
+  border: 2px solid rgb(226, 220, 220);
+  width:50%;
+  max-width: 500px;
+  transform: translateY(50%);
+  margin: 0 auto;
+  color:rgb(17, 17, 17);
+}
+textarea{
+  width:100%;
+  height:100%;
+  max-width: 800px;
 }
