@@ -38,9 +38,33 @@ const Home = () => {
   const [activeSkill, setActiveSkill] = useState(null); // Track clicked skill
   const [showContactForm, setShowContactForm] = useState(false);
 
+  const skillRadius = 500;
+  const center = { x: 100, y: 100 };
+
+  const skillPositions = Object.keys(skillData).map((skill, index) => {
+    const angle = (index / Object.keys(skillData).length) * 2 * Math.PI;
+    const x = center.x + skillRadius * Math.cos(angle);
+    const y = center.y + skillRadius * Math.sin(angle);
+    return { skill, x, y };
+  });
+
+  useEffect(() => {
+    // On load, set the skills initially invisible and moved down
+    gsap.set(".skill", { opacity: 0, y: 100 });
+
+    // After a brief delay, animate skills upwards with a staggered effect
+    gsap.to(".skill", {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.1, // Stagger the animations
+      delay: 2, // Wait for 2 seconds before starting the animation
+      ease: "power2.out",
+    });
+  }, []);
+
   // Handle the contact form visibility and animations with GSAP
   useEffect(() => {
-    // When the form is shown, animate it in
     if (showContactForm) {
       gsap.to(".contact-form-modal", {
         opacity: 1,
@@ -50,20 +74,19 @@ const Home = () => {
         visibility: "visible",
         pointerEvents: "auto", // Allow interaction when modal is visible
       });
-      document.body.style.overflow="hidden";
+      document.body.style.overflow = "hidden";
     } else {
-      // When the form is hidden, animate it out
       gsap.to(".contact-form-modal", {
         opacity: 0,
         y: -50,
         duration: 0.5,
         ease: "power2.in",
-        visibility: "visible", // Hide the modal completely
+        visibility: "visible",
         pointerEvents: "none", // Disable interaction when modal is hidden
       });
       document.body.style.overflow = "auto";
     }
-  }, [showContactForm]); // Trigger animation on showContactForm change
+  }, [showContactForm]);
 
   // Handle form submission
   const handleFormSubmit = (e) => {
@@ -84,35 +107,33 @@ const Home = () => {
       );
   };
 
-  // Handle the click event to toggle skills
   const handleSkillClick = (skill) => {
     if (activeSkill === skill) {
-      gsap.to(".skill", { x: 0, opacity: 1, duration: 0.5, stagger: 0.1 });
+      gsap.to(".skill", { y: 0, opacity: 1, duration: 0.1, stagger: 0.8 });
       gsap.to(".skill-info-container", {
         opacity: 0,
-        duration: 0.5,
-        ease: "power1.in",
+        duration: 1.5,
+        ease: "power1.out",
         onComplete: () => setActiveSkill(null),
       });
       gsap.to(".skill-title-container", {
-        opacity: 1,
-        duration: 0.5,
-        ease: "power2.out",
+        opacity: 0,
+        duration: 0.1,
+        ease: "power2.in",
       });
     } else {
-      gsap.to(".skill", { opacity: 0, duration: 0.1 });
-      gsap.to(".skill-title-container", { opacity: 0, duration: 0.8 });
+      gsap.to(".skill", { y: 0, opacity: 0, duration: 0.5, stagger: 0.1 });
+      gsap.to(".skill-title-container", { opacity: 0, duration: 0.5, stagger: 5 });
       gsap.to(".skill-description", {
-        opacity: 1,
+        opacity: 0,
         y: 0,
-        duration: 1,
+        duration: 0.1,
         ease: "power2.out",
       });
       setActiveSkill(skill);
     }
   };
 
-  // Ensure clicking the title also toggles the state
   const handleTitleClick = () => {
     if (activeSkill) {
       handleSkillClick(activeSkill);
@@ -120,17 +141,15 @@ const Home = () => {
   };
 
   const handleContactButtonClick = () => {
-    // Toggle the modal visibility when the button is clicked
-    console.log("contact button clicked");
     setShowContactForm((prev) => !prev);
   };
 
   return (
     <section id="home-page">
-          <Hero />
+      <Hero />
       <div className="skill-wrapper">
         <p className="skill-instruction">
-          My skills. Click on each to learn more.
+          My Skills. Click Each One to Learn More. Click the skill in the container to close.
         </p>
         <ul className="skill-container">
           {Object.keys(skillData).map((skill, index) => (
@@ -141,73 +160,88 @@ const Home = () => {
             </li>
           ))}
         </ul>
-        {/* Skill Info Container Below Stars */}
         {activeSkill && (
           <div className="skill-info-container">
-            {/* Title of the Skill that Moves into the Container */}
             <div className="skill-title-container" onClick={handleTitleClick}>
               <h2 className="skill">{activeSkill}</h2>
             </div>
-            {/* Description of the Skill */}
             <p className="skill-container__info">
               {skillData[activeSkill].description}
             </p>
           </div>
         )}
       </div>
-      {/* 3D Scene with Canvas */}
-      <div className="canvas-container">
-        <Canvas camera={{ near: 1, far: 1000, position: "absolute", zIndex: 1 }}>
-          <Suspense fallback={<Loader />}>
 
-            <directionalLight position={[1, 10, 1]} intensity={1} />
-            <ambientLight intensity={1} />
-            <pointLight />
-            <spotLight />
-            <hemisphereLight skyColor="#b1e1ff" groundColor="#00000" intensity={1} />
-            {[...Array(100)].map((_, index) => (
-              <ShootingStar
-              position={[Math.random() * 20 + 1, Math.random() * 100 + 100, Math.random() * -10]}
-              speed={100 + Math.random() * 80}
-              key={index}
-              />
-            ))}
-          </Suspense>
-        </Canvas>
+      <div className="canvas-container">
         <div className="overlay">
           <h1 id="name">Hello, I'm Jay</h1>
-          <p id="introduction">Frontend Software Developer.</p>
-          <p>I code and make unique experiences.</p>
-          <p>If you like what you see, Let's chat!</p>
-          <button  id="button" className="contact-btn" type="button" onClick={()=> handleContactButtonClick()} // Show the modal on button click
+          <p id="introduction">
+            Frontend Software Developer. I code and make unique experiences.
+            If you like what you see, Let's chat!
+          </p>
+          <button
+            id="button"
+            className="contact-btn"
+            type="button"
+            onClick={handleContactButtonClick}
           >
             I'm Just One Click Away
           </button>
 
-          {/* Contact Form Modal */}
-            {/* GSAP animations will handle visibility and opacity */}
-            <div className="contact-form-modal">
+          <div className="contact-form-modal">
             {showContactForm && (
-              <form onSubmit={handleFormSubmit}>
-                <label>Name</label>
-                <input type="text" name="user_name" required />
-                <label>Email</label>
-                <input type="email" name="user_email" required />
-                <label>Message</label>
-                <textarea name="message" required></textarea>
-                <button type="submit">Send Message</button>
-                {/* Close button toggles the state to false */}
-                <button
-                  id="button"
-                  className="close-btn"
-                  type="button"
-                  onClick={() => setShowContactForm(false)} // Close the modal
+              <div style={{ position: "absolute", height: "800px" }}>
+                <Canvas
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    zIndex: 1,
+                    pointerEvents: "none",
+                  }}
+                  camera={{ near: 1, far: 1000, position: [0, 0, 5] }}
                 >
-                  Close
-                </button>
-              </form>
+                  <Suspense fallback={<Loader />}>
+                    <directionalLight position={[1, 10, 1]} intensity={1} />
+                    <ambientLight intensity={1} />
+                    <pointLight />
+                    <spotLight />
+                    <hemisphereLight skyColor="#b1e1ff" groundColor="#00000" intensity={1} />
+                    {[...Array(100)].map((_, index) => (
+                      <ShootingStar
+                        position={[
+                          Math.random() * 20 + 1,
+                          Math.random() * 100 + 1,
+                          Math.random() * -10,
+                        ]}
+                        speed={10 + Math.random() * 10}
+                        key={index}
+                      />
+                    ))}
+                  </Suspense>
+                </Canvas>
+                <form onSubmit={handleFormSubmit} style={{ pointerEvents: "auto" }}>
+                  <label>Name</label>
+                  <input type="text" name="user_name" required />
+                  <label>Email</label>
+                  <input type="email" name="user_email" required />
+                  <label>Message</label>
+                  <textarea name="message" required></textarea>
+                  <button type="submit">Send Message</button>
+                  <button
+                    id="button"
+                    className="close-btn"
+                    type="button"
+                    onClick={() => setShowContactForm(false)}
+                  >
+                    Close
+                  </button>
+                </form>
+              </div>
             )}
-            </div>
+          </div>
         </div>
       </div>
     </section>

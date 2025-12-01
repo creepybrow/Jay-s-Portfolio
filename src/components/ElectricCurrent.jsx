@@ -10,7 +10,7 @@ class ElectricPath extends THREE.Curve {
   }
 
   getPoint(t) {
-    const time = Date.now() * 0.00007;
+    const time = Date.now() * 0.00009;
     const x = Math.sin(t * 60 + time) * (60 + Math.sin(time * 10) * 2);  // Pulsating X position
     const y = Math.cos(t * 60 + time) * (60 + Math.cos(time * 10) *2); // Pulsating Y position
     const z = t * 1;  // Linear progression along Z axis (you can make this nonlinear for more dynamic movement)
@@ -51,7 +51,7 @@ const ElectricCurrent = ({ camera }) => {
       setIsZapping(intersects.length > 0);
     };
 
-    const zapInterval = setInterval(zap, 1);
+    const zapInterval = setInterval(zap, 10000);
 
     return () => {
       clearInterval(zapInterval);
